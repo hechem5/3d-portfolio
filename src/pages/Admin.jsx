@@ -30,15 +30,21 @@ export default function Admin() {
   const [newSkill, setNewSkill] = useState('');
 
   useEffect(() => {
+    // Initial fetch on load
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       if (session) fetchCVData();
     });
 
-    supabase.auth.onAuthStateChange((_event, session) => {
+    // Only fetch data when specifically signing in to avoid wiping unsaved work on token refreshes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       setSession(session);
-      if (session) fetchCVData();
+      if (event === 'SIGNED_IN') {
+        fetchCVData();
+      }
     });
+
+    return () => subscription.unsubscribe();
   }, []);
 
   const fetchCVData = async () => {
