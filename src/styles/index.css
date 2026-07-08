@@ -1223,6 +1223,9 @@ textarea.form-input {
 *, *::before, *::after {
   cursor: none !important;
 }
+.admin-override, .admin-override * {
+  cursor: auto !important;
+}
 
 @media (max-width: 768px) {
   /* Restore cursor on touch/mobile */

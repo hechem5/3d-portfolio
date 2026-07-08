@@ -58,7 +58,7 @@ export default function Admin() {
 
   if (!session) {
     return (
-      <div className="section flex-center" style={{ minHeight: '100vh' }}>
+      <div className="section flex-center admin-override" style={{ minHeight: '100vh' }}>
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="glass-card" style={{ padding: '3rem', maxWidth: '400px', width: '100%' }}>
           <h2 className="heading-md" style={{ textAlign: 'center', marginBottom: '2rem' }}>Admin Login</h2>
           <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
@@ -81,7 +81,7 @@ export default function Admin() {
   }
 
   return (
-    <div className="section" style={{ minHeight: '100vh', paddingTop: '100px' }}>
+    <div className="section admin-override" style={{ minHeight: '100vh', paddingTop: '100px' }}>
       <div className="section-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <h2 className="heading-lg">CV Data Editor</h2>
         <button onClick={() => supabase.auth.signOut()} className="btn-secondary" style={{ padding: '0.5rem 1.5rem' }}>Sign Out</button>
