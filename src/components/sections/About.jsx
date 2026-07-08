@@ -1,7 +1,11 @@
 import { motion } from 'framer-motion';
+import { useState, useEffect } from 'react';
 import { aboutData } from '../../constants';
 import ProfileCard from '../reactbits/ProfileCard';
 import profileImg from '../../assets/profile.png';
+import { supabase } from '../../lib/supabase';
+import { PDFDownloadLink } from '@react-pdf/renderer';
+import { CVDocument } from '../cv/CVDocument';
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 40 },
@@ -20,6 +24,16 @@ const IconRocket = () => (
 );
 
 export default function About() {
+  const [cvData, setCvData] = useState(null);
+
+  useEffect(() => {
+    async function fetchCV() {
+      const { data } = await supabase.from('cv_data').select('content').eq('id', 1).single();
+      if (data) setCvData(data.content);
+    }
+    fetchCV();
+  }, []);
+
   return (
     <section className="section" id="about">
       <div className="section-header">
@@ -95,26 +109,43 @@ export default function About() {
             ))}
 
             {/* Download CV Button */}
-            <motion.div
-              className="glass-card about-stat-card"
-              variants={fadeInUp}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.2 }}
-              custom={aboutData.stats.length + 2}
-              style={{ cursor: 'pointer', transition: 'all 0.3s ease', gridColumn: 'span 2' }}
-              onClick={() => {
-                const link = document.createElement('a');
-                link.href = '/cv.pdf';
-                link.download = 'Hechem_Klai_CV.pdf';
-                link.click();
-              }}
-              onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-5px)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.5)'; e.currentTarget.style.background = 'rgba(145, 94, 255, 0.2)'; }}
-              onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.05)'; e.currentTarget.style.background = 'rgba(255,255,255,0.02)'; }}
-            >
-              <div className="about-stat-value">CV</div>
-              <div className="about-stat-label">Download Resume</div>
-            </motion.div>
+            {cvData ? (
+              <PDFDownloadLink 
+                document={<CVDocument data={cvData} />} 
+                fileName="Hechem_Klai_CV.pdf"
+                style={{ textDecoration: 'none' }}
+              >
+                {({ loading }) => (
+                  <motion.div
+                    className="glass-card about-stat-card"
+                    variants={fadeInUp}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, amount: 0.2 }}
+                    custom={aboutData.stats.length + 2}
+                    style={{ cursor: 'pointer', transition: 'all 0.3s ease', gridColumn: 'span 2' }}
+                    onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-5px)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.5)'; e.currentTarget.style.background = 'rgba(145, 94, 255, 0.2)'; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.05)'; e.currentTarget.style.background = 'rgba(255,255,255,0.02)'; }}
+                  >
+                    <div className="about-stat-value">CV</div>
+                    <div className="about-stat-label">{loading ? 'Generating PDF...' : 'Download Resume'}</div>
+                  </motion.div>
+                )}
+              </PDFDownloadLink>
+            ) : (
+              <motion.div
+                className="glass-card about-stat-card"
+                variants={fadeInUp}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.2 }}
+                custom={aboutData.stats.length + 2}
+                style={{ cursor: 'wait', transition: 'all 0.3s ease', gridColumn: 'span 2' }}
+              >
+                <div className="about-stat-value">CV</div>
+                <div className="about-stat-label">Loading Data...</div>
+              </motion.div>
+            )}
           </div>
         </div>
       </div>

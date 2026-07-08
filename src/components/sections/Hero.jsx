@@ -3,7 +3,7 @@ import { heroData } from '../../constants';
 import RippleGrid from '../reactbits/RippleGrid';
 import FuzzyText from '../reactbits/FuzzyText';
 import VariableProximity from '../reactbits/VariableProximity';
-import { SECTION_ORDER } from '../../App';
+import { SECTION_ORDER } from '../../pages/Portfolio';
 
 function scrollToNextSection() {
   const scrollY = window.scrollY + window.innerHeight / 2;
