@@ -114,6 +114,17 @@ export default function Admin() {
     updateField('skills', cvData.skills.filter(s => s !== skillToRemove));
   };
 
+  const handleClearForm = () => {
+    if (window.confirm("Are you sure you want to completely clear the form? (This will not delete your saved database until you click 'Save CV Data')")) {
+      setCvData({
+        name: '', role: '', email: '', phone: '', location: '', linkedin: '',
+        summary: '', languages: '', skills: [], keyProjects: [], experience: [], education: [], certifications: []
+      });
+      setJsonImport('');
+      setJsonError('');
+    }
+  };
+
   const handleJsonImport = () => {
     try {
       if (!jsonImport.trim()) return;
@@ -224,13 +235,22 @@ export default function Admin() {
             style={{ minHeight: '120px', fontFamily: 'monospace', fontSize: '0.85rem', resize: 'vertical' }}
           />
           {jsonError && <p style={{ color: '#FF006E', fontSize: '0.85rem', marginTop: '0.5rem' }}>{jsonError}</p>}
-          <button 
-            onClick={handleJsonImport} 
-            className="btn-primary" 
-            style={{ marginTop: '1rem', padding: '0.5rem 1.5rem', fontSize: '0.85rem', width: 'fit-content' }}
-          >
-            Load into Form
-          </button>
+          <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
+            <button 
+              onClick={handleJsonImport} 
+              className="btn-primary" 
+              style={{ padding: '0.5rem 1.5rem', fontSize: '0.85rem' }}
+            >
+              Load into Form
+            </button>
+            <button 
+              onClick={handleClearForm} 
+              className="btn-secondary" 
+              style={{ padding: '0.5rem 1.5rem', fontSize: '0.85rem' }}
+            >
+              Clear Entire Form
+            </button>
+          </div>
         </div>
 
         {/* Basic Info */}
