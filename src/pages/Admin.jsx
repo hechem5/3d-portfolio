@@ -28,6 +28,10 @@ export default function Admin() {
   });
   const [saving, setSaving] = useState(false);
   const [newSkill, setNewSkill] = useState('');
+  
+  // JSON Import State
+  const [jsonImport, setJsonImport] = useState('');
+  const [jsonError, setJsonError] = useState('');
 
   useEffect(() => {
     // Initial fetch on load
@@ -110,6 +114,36 @@ export default function Admin() {
     updateField('skills', cvData.skills.filter(s => s !== skillToRemove));
   };
 
+  const handleJsonImport = () => {
+    try {
+      if (!jsonImport.trim()) return;
+      const parsed = JSON.parse(jsonImport);
+      
+      // Merge with default schema to ensure arrays exist and UI doesn't crash
+      setCvData({
+        name: parsed.name || '',
+        role: parsed.role || '',
+        email: parsed.email || '',
+        phone: parsed.phone || '',
+        location: parsed.location || '',
+        linkedin: parsed.linkedin || '',
+        summary: parsed.summary || '',
+        languages: parsed.languages || '',
+        skills: parsed.skills || [],
+        keyProjects: parsed.keyProjects || [],
+        experience: parsed.experience || [],
+        education: parsed.education || [],
+        certifications: parsed.certifications || []
+      });
+      
+      setJsonError('');
+      setJsonImport(''); // Clear it after success
+      alert('JSON loaded into form! Review your changes and click Save CV Data when ready.');
+    } catch (e) {
+      setJsonError('Invalid JSON format. Please ensure it is perfectly formatted JSON.');
+    }
+  };
+
   const addArrayItem = (field, emptyItem) => {
     setCvData(prev => ({ ...prev, [field]: [...(prev[field] || []), emptyItem] }));
   };
@@ -162,6 +196,29 @@ export default function Admin() {
         {/* LEFT COLUMN: FORM */}
         <div style={{ display: 'grid', gap: '2rem' }}>
         
+        {/* JSON Import Tool */}
+        <div className="glass-card" style={{ padding: '2rem', borderLeft: '4px solid #915EFF' }}>
+          <h3 className="heading-sm" style={{ marginBottom: '1rem', color: '#915EFF' }}>Advanced: Import JSON</h3>
+          <p style={{ color: 'var(--secondary)', fontSize: '0.9rem', marginBottom: '1rem' }}>
+            Paste a valid CV JSON object here to instantly populate the form below. 
+          </p>
+          <textarea 
+            className="form-input" 
+            placeholder='{ "name": "Hechem", "role": "Developer"... }'
+            value={jsonImport}
+            onChange={(e) => { setJsonImport(e.target.value); setJsonError(''); }}
+            style={{ minHeight: '120px', fontFamily: 'monospace', fontSize: '0.85rem', resize: 'vertical' }}
+          />
+          {jsonError && <p style={{ color: '#FF006E', fontSize: '0.85rem', marginTop: '0.5rem' }}>{jsonError}</p>}
+          <button 
+            onClick={handleJsonImport} 
+            className="btn-secondary" 
+            style={{ marginTop: '1rem', padding: '0.5rem 1.5rem' }}
+          >
+            Load into Form
+          </button>
+        </div>
+
         {/* Basic Info */}
         <div className="glass-card" style={{ padding: '2rem' }}>
           <h3 className="heading-sm" style={{ marginBottom: '1.5rem', color: '#00E5FF' }}>Basic Info & Contact</h3>
