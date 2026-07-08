@@ -101,17 +101,19 @@ export default function Admin() {
   };
 
   const addArrayItem = (field, emptyItem) => {
-    updateField(field, [...cvData[field], emptyItem]);
+    setCvData(prev => ({ ...prev, [field]: [...(prev[field] || []), emptyItem] }));
   };
 
   const updateArrayItem = (field, index, subField, value) => {
-    const newArr = [...cvData[field]];
-    newArr[index][subField] = value;
-    updateField(field, newArr);
+    setCvData(prev => {
+      const newArr = [...(prev[field] || [])];
+      newArr[index] = { ...newArr[index], [subField]: value };
+      return { ...prev, [field]: newArr };
+    });
   };
 
   const removeArrayItem = (field, index) => {
-    updateField(field, cvData[field].filter((_, i) => i !== index));
+    setCvData(prev => ({ ...prev, [field]: (prev[field] || []).filter((_, i) => i !== index) }));
   };
 
   if (!session) {
