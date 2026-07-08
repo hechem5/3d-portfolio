@@ -117,7 +117,21 @@ export default function Admin() {
   const handleJsonImport = () => {
     try {
       if (!jsonImport.trim()) return;
-      const parsed = JSON.parse(jsonImport);
+      
+      // Sanitize: remove markdown backticks if user accidentally copied them
+      let cleanJson = jsonImport.trim();
+      if (cleanJson.startsWith('```json')) {
+        cleanJson = cleanJson.substring(7);
+      }
+      if (cleanJson.startsWith('```')) {
+        cleanJson = cleanJson.substring(3);
+      }
+      if (cleanJson.endsWith('```')) {
+        cleanJson = cleanJson.substring(0, cleanJson.length - 3);
+      }
+      cleanJson = cleanJson.trim();
+
+      const parsed = JSON.parse(cleanJson);
       
       // Merge with default schema to ensure arrays exist and UI doesn't crash
       setCvData({
@@ -140,7 +154,7 @@ export default function Admin() {
       setJsonImport(''); // Clear it after success
       alert('JSON loaded into form! Review your changes and click Save CV Data when ready.');
     } catch (e) {
-      setJsonError('Invalid JSON format. Please ensure it is perfectly formatted JSON.');
+      setJsonError('Invalid JSON format. Please ensure you copied exactly the { ... } object without any text before or after it.');
     }
   };
 
@@ -148,38 +162,35 @@ export default function Admin() {
     setCvData(prev => ({ ...prev, [field]: [...(prev[field] || []), emptyItem] }));
   };
 
-  const updateArrayItem = (field, index, subField, value) => {
+  const updateArrayItem = (field, index, key, value) => {
     setCvData(prev => {
-      const newArr = [...(prev[field] || [])];
-      newArr[index] = { ...newArr[index], [subField]: value };
-      return { ...prev, [field]: newArr };
+      const arr = [...(prev[field] || [])];
+      arr[index] = { ...arr[index], [key]: value };
+      return { ...prev, [field]: arr };
     });
   };
 
   const removeArrayItem = (field, index) => {
-    setCvData(prev => ({ ...prev, [field]: (prev[field] || []).filter((_, i) => i !== index) }));
+    setCvData(prev => {
+      const arr = [...(prev[field] || [])];
+      arr.splice(index, 1);
+      return { ...prev, [field]: arr };
+    });
   };
 
   if (!session) {
     return (
-      <div className="section flex-center admin-override" style={{ minHeight: '100vh' }}>
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="glass-card" style={{ padding: '3rem', maxWidth: '400px', width: '100%' }}>
-          <h2 className="heading-md" style={{ textAlign: 'center', marginBottom: '2rem' }}>Admin Login</h2>
+      <div className="section" style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div className="glass-card" style={{ padding: '3rem', maxWidth: '400px', width: '100%', textAlign: 'center' }}>
+          <h2 className="heading-md" style={{ marginBottom: '2rem' }}>Admin Login</h2>
           <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-            <div>
-              <label className="form-label">Email</label>
-              <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="form-input" required />
-            </div>
-            <div>
-              <label className="form-label">Password</label>
-              <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="form-input" required />
-            </div>
-            {error && <p style={{ color: '#FF006E', fontSize: '0.9rem' }}>{error}</p>}
-            <button type="submit" className="btn-primary" disabled={loading} style={{ marginTop: '1rem' }}>
+            <input type="email" placeholder="Email" className="form-input" value={email} onChange={e => setEmail(e.target.value)} required />
+            <input type="password" placeholder="Password" className="form-input" value={password} onChange={e => setPassword(e.target.value)} required />
+            <button type="submit" className="btn-primary" disabled={loading}>
               {loading ? 'Logging in...' : 'Login'}
             </button>
           </form>
-        </motion.div>
+        </div>
       </div>
     );
   }
@@ -187,7 +198,10 @@ export default function Admin() {
   return (
     <div className="section admin-override" style={{ minHeight: '100vh', paddingTop: '100px', paddingBottom: '100px', maxWidth: '1600px', margin: '0 auto' }}>
       <div className="section-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h2 className="heading-lg">CV Data Editor</h2>
+        <div>
+          <span className="section-subtitle">Dashboard</span>
+          <h2 className="heading-lg">Manage CV</h2>
+        </div>
         <button onClick={() => supabase.auth.signOut()} className="btn-secondary" style={{ padding: '0.5rem 1.5rem' }}>Sign Out</button>
       </div>
 
@@ -212,8 +226,8 @@ export default function Admin() {
           {jsonError && <p style={{ color: '#FF006E', fontSize: '0.85rem', marginTop: '0.5rem' }}>{jsonError}</p>}
           <button 
             onClick={handleJsonImport} 
-            className="btn-secondary" 
-            style={{ marginTop: '1rem', padding: '0.5rem 1.5rem' }}
+            className="btn-primary" 
+            style={{ marginTop: '1rem', padding: '0.5rem 1.5rem', fontSize: '0.85rem', width: 'fit-content' }}
           >
             Load into Form
           </button>
