@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import { motion } from 'framer-motion';
+import { PDFViewer } from '@react-pdf/renderer';
+import { CVDocument } from '../components/cv/CVDocument';
 
 export default function Admin() {
   const [session, setSession] = useState(null);
@@ -137,13 +139,16 @@ export default function Admin() {
   }
 
   return (
-    <div className="section admin-override" style={{ minHeight: '100vh', paddingTop: '100px', paddingBottom: '100px' }}>
+    <div className="section admin-override" style={{ minHeight: '100vh', paddingTop: '100px', paddingBottom: '100px', maxWidth: '1600px', margin: '0 auto' }}>
       <div className="section-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <h2 className="heading-lg">CV Data Editor</h2>
         <button onClick={() => supabase.auth.signOut()} className="btn-secondary" style={{ padding: '0.5rem 1.5rem' }}>Sign Out</button>
       </div>
 
-      <div style={{ display: 'grid', gap: '2rem', maxWidth: '800px', margin: '0 auto' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', alignItems: 'start' }}>
+        
+        {/* LEFT COLUMN: FORM */}
+        <div style={{ display: 'grid', gap: '2rem' }}>
         
         {/* Basic Info */}
         <div className="glass-card" style={{ padding: '2rem' }}>
@@ -329,6 +334,16 @@ export default function Admin() {
           <button onClick={handleSave} className="btn-primary" disabled={saving} style={{ padding: '1rem 3rem', fontSize: '1.1rem', boxShadow: '0 10px 30px rgba(82, 39, 255, 0.4)' }}>
             {saving ? 'Saving...' : 'Save CV Data'}
           </button>
+        </div>
+
+        </div> {/* END LEFT COLUMN */}
+
+        {/* RIGHT COLUMN: LIVE PDF PREVIEW */}
+        <div className="glass-card" style={{ position: 'sticky', top: '100px', height: 'calc(100vh - 120px)', padding: '1rem', overflow: 'hidden' }}>
+          <h3 className="heading-sm" style={{ marginBottom: '1rem', color: '#00E5FF' }}>Live Preview</h3>
+          <PDFViewer style={{ width: '100%', height: 'calc(100% - 3rem)', border: 'none', borderRadius: '8px' }}>
+            <CVDocument data={cvData} />
+          </PDFViewer>
         </div>
 
       </div>
