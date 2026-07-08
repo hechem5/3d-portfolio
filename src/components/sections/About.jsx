@@ -113,7 +113,7 @@ export default function About() {
               <PDFDownloadLink 
                 document={<CVDocument data={cvData} />} 
                 fileName="Hechem_Klai_CV.pdf"
-                style={{ textDecoration: 'none' }}
+                style={{ textDecoration: 'none', gridColumn: 'span 2' }}
               >
                 {({ loading }) => (
                   <motion.div
@@ -123,7 +123,7 @@ export default function About() {
                     whileInView="visible"
                     viewport={{ once: true, amount: 0.2 }}
                     custom={aboutData.stats.length + 2}
-                    style={{ cursor: 'pointer', transition: 'all 0.3s ease', gridColumn: 'span 2' }}
+                    style={{ cursor: 'pointer', transition: 'all 0.3s ease' }}
                     onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-5px)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.5)'; e.currentTarget.style.background = 'rgba(145, 94, 255, 0.2)'; }}
                     onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.05)'; e.currentTarget.style.background = 'rgba(255,255,255,0.02)'; }}
                   >
