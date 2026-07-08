@@ -4,7 +4,7 @@ import { aboutData } from '../../constants';
 import ProfileCard from '../reactbits/ProfileCard';
 import profileImg from '../../assets/profile.png';
 import { supabase } from '../../lib/supabase';
-import { PDFDownloadLink } from '@react-pdf/renderer';
+import { pdf } from '@react-pdf/renderer';
 import { CVDocument } from '../cv/CVDocument';
 
 const fadeInUp = {
@@ -25,6 +25,7 @@ const IconRocket = () => (
 
 export default function About() {
   const [cvData, setCvData] = useState(null);
+  const [isGenerating, setIsGenerating] = useState(false);
 
   useEffect(() => {
     async function fetchCV() {
@@ -33,6 +34,26 @@ export default function About() {
     }
     fetchCV();
   }, []);
+
+  const handleDownloadCV = async () => {
+    if (!cvData) return;
+    setIsGenerating(true);
+    try {
+      const blob = await pdf(<CVDocument data={cvData} />).toBlob();
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = "Hechem_Klai_CV.pdf";
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+      alert('Error generating PDF. Please try again.');
+    }
+    setIsGenerating(false);
+  };
 
   return (
     <section className="section" id="about">
@@ -110,28 +131,21 @@ export default function About() {
 
             {/* Download CV Button */}
             {cvData ? (
-              <PDFDownloadLink 
-                document={<CVDocument data={cvData} />} 
-                fileName="Hechem_Klai_CV.pdf"
-                style={{ textDecoration: 'none', gridColumn: 'span 2', color: 'inherit' }}
+              <motion.div
+                className="glass-card about-stat-card"
+                variants={fadeInUp}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.2 }}
+                custom={aboutData.stats.length + 2}
+                style={{ cursor: 'pointer', transition: 'all 0.3s ease', gridColumn: 'span 2' }}
+                onClick={handleDownloadCV}
+                onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-5px)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.5)'; e.currentTarget.style.background = 'rgba(145, 94, 255, 0.2)'; }}
+                onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.05)'; e.currentTarget.style.background = 'rgba(255,255,255,0.02)'; }}
               >
-                {({ loading }) => (
-                  <motion.div
-                    className="glass-card about-stat-card"
-                    variants={fadeInUp}
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true, amount: 0.2 }}
-                    custom={aboutData.stats.length + 2}
-                    style={{ cursor: 'pointer', transition: 'all 0.3s ease' }}
-                    onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-5px)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.5)'; e.currentTarget.style.background = 'rgba(145, 94, 255, 0.2)'; }}
-                    onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.05)'; e.currentTarget.style.background = 'rgba(255,255,255,0.02)'; }}
-                  >
-                    <div className="about-stat-value">CV</div>
-                    <div className="about-stat-label">{loading ? 'Generating PDF...' : 'Download Resume'}</div>
-                  </motion.div>
-                )}
-              </PDFDownloadLink>
+                <div className="about-stat-value">CV</div>
+                <div className="about-stat-label">{isGenerating ? 'Generating PDF...' : 'Download Resume'}</div>
+              </motion.div>
             ) : (
               <motion.div
                 className="glass-card about-stat-card"
