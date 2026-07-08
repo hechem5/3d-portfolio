@@ -65,6 +65,13 @@ export const skillCategories = {
 
 export const certificates = [
   {
+    title: "Digital Marketing Certified",
+    issuer: "HubSpot Academy",
+    date: "Jul 2026",
+    description: "Digital Marketing, Search Engine Marketing (SEM) and related skills.",
+    credential: "https://app-eu1.hubspot.com/academy/achievements/qv7286zl/en/1/hechem-klai/digital-marketing",
+  },
+  {
     title: "EF SET English Certificate 78/100 (C2 Proficient)",
     issuer: "EF SET",
     date: "Jul 2026",
@@ -112,13 +119,6 @@ export const certificates = [
     date: "Nov 2025",
     description: "Foundational understanding of AWS cloud computing concepts and security.",
     credential: "https://www.credly.com/badges/5e55e91f-722a-452d-93b6-20b88311db2e/linked_in_profile",
-  },
-  {
-    title: "Digital Marketing Certified",
-    issuer: "HubSpot Academy",
-    date: "Jul 2026",
-    description: "Digital Marketing, Search Engine Marketing (SEM) and related skills.",
-    credential: "https://app-eu1.hubspot.com/academy/achievements/qv7286zl/en/1/hechem-klai/digital-marketing",
   },
 ];
 
