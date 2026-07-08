@@ -82,9 +82,13 @@ export default function Admin() {
   const handleSave = async () => {
     setSaving(true);
     try {
-      const { error } = await supabase.from('cv_data').update({ content: cvData }).eq('id', 1);
+      const { data, error } = await supabase.from('cv_data').update({ content: cvData }).eq('id', 1).select();
       if (error) throw error;
-      alert('CV Saved Successfully!');
+      if (!data || data.length === 0) {
+        alert('ERROR: The database silently blocked the save! This usually means Row Level Security (RLS) is blocking you, or row ID 1 does not exist.');
+      } else {
+        alert('CV Saved Successfully to Database!');
+      }
     } catch (err) {
       alert('Error saving CV: ' + err.message);
     }
