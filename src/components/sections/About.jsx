@@ -113,7 +113,7 @@ export default function About() {
               <PDFDownloadLink 
                 document={<CVDocument data={cvData} />} 
                 fileName="Hechem_Klai_CV.pdf"
-                style={{ textDecoration: 'none', gridColumn: 'span 2' }}
+                style={{ textDecoration: 'none', gridColumn: 'span 2', color: 'inherit' }}
               >
                 {({ loading }) => (
                   <motion.div
