@@ -26,7 +26,7 @@ export const aboutData = {
     { label: "Projects Completed", value: "4" },
     { label: "Technologies", value: "30+" },
     { label: "Hackathons Won", value: "1" },
-    { label: "Certificates", value: "7" },
+    { label: "Certificates", value: "8" },
   ],
   location: "Tunisia",
   availability: "Open to opportunities",
@@ -112,6 +112,13 @@ export const certificates = [
     date: "Nov 2025",
     description: "Foundational understanding of AWS cloud computing concepts and security.",
     credential: "https://www.credly.com/badges/5e55e91f-722a-452d-93b6-20b88311db2e/linked_in_profile",
+  },
+  {
+    title: "Digital Marketing Certified",
+    issuer: "HubSpot Academy",
+    date: "Jul 2026",
+    description: "Digital Marketing, Search Engine Marketing (SEM) and related skills.",
+    credential: "https://app-eu1.hubspot.com/academy/achievements/qv7286zl/en/1/hechem-klai/digital-marketing",
   },
 ];
 
