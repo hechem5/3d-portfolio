@@ -12,9 +12,17 @@ export default function Admin() {
   const [cvData, setCvData] = useState({
     name: '',
     role: '',
+    email: '',
+    phone: '',
+    location: '',
+    linkedin: '',
+    summary: '',
+    languages: '',
     skills: [],
+    keyProjects: [],
     experience: [],
-    education: []
+    education: [],
+    certifications: []
   });
   const [saving, setSaving] = useState(false);
   const [newSkill, setNewSkill] = useState('');
@@ -37,9 +45,17 @@ export default function Admin() {
       setCvData({
         name: data.content.name || '',
         role: data.content.role || '',
+        email: data.content.email || '',
+        phone: data.content.phone || '',
+        location: data.content.location || '',
+        linkedin: data.content.linkedin || '',
+        summary: data.content.summary || '',
+        languages: data.content.languages || '',
         skills: data.content.skills || [],
+        keyProjects: data.content.keyProjects || [],
         experience: data.content.experience || [],
-        education: data.content.education || []
+        education: data.content.education || [],
+        certifications: data.content.certifications || []
       });
     } else {
       console.error(error);
@@ -82,32 +98,18 @@ export default function Admin() {
     updateField('skills', cvData.skills.filter(s => s !== skillToRemove));
   };
 
-  const addExperience = () => {
-    updateField('experience', [...cvData.experience, { title: '', company: '', date: '', points: [] }]);
+  const addArrayItem = (field, emptyItem) => {
+    updateField(field, [...cvData[field], emptyItem]);
   };
 
-  const updateExperience = (index, field, value) => {
-    const newExp = [...cvData.experience];
-    newExp[index][field] = value;
-    updateField('experience', newExp);
+  const updateArrayItem = (field, index, subField, value) => {
+    const newArr = [...cvData[field]];
+    newArr[index][subField] = value;
+    updateField(field, newArr);
   };
 
-  const removeExperience = (index) => {
-    updateField('experience', cvData.experience.filter((_, i) => i !== index));
-  };
-
-  const addEducation = () => {
-    updateField('education', [...cvData.education, { degree: '', school: '', date: '' }]);
-  };
-
-  const updateEducation = (index, field, value) => {
-    const newEdu = [...cvData.education];
-    newEdu[index][field] = value;
-    updateField('education', newEdu);
-  };
-
-  const removeEducation = (index) => {
-    updateField('education', cvData.education.filter((_, i) => i !== index));
+  const removeArrayItem = (field, index) => {
+    updateField(field, cvData[field].filter((_, i) => i !== index));
   };
 
   if (!session) {
@@ -145,22 +147,53 @@ export default function Admin() {
         
         {/* Basic Info */}
         <div className="glass-card" style={{ padding: '2rem' }}>
-          <h3 className="heading-sm" style={{ marginBottom: '1.5rem', color: '#00E5FF' }}>Basic Info</h3>
+          <h3 className="heading-sm" style={{ marginBottom: '1.5rem', color: '#00E5FF' }}>Basic Info & Contact</h3>
           <div style={{ display: 'grid', gap: '1rem' }}>
-            <div>
-              <label className="form-label">Full Name</label>
-              <input type="text" className="form-input" value={cvData.name} onChange={(e) => updateField('name', e.target.value)} />
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+              <div>
+                <label className="form-label">Full Name</label>
+                <input type="text" className="form-input" value={cvData.name} onChange={(e) => updateField('name', e.target.value)} />
+              </div>
+              <div>
+                <label className="form-label">Professional Role</label>
+                <input type="text" className="form-input" value={cvData.role} onChange={(e) => updateField('role', e.target.value)} />
+              </div>
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+              <div>
+                <label className="form-label">Email</label>
+                <input type="text" className="form-input" value={cvData.email} onChange={(e) => updateField('email', e.target.value)} />
+              </div>
+              <div>
+                <label className="form-label">Phone</label>
+                <input type="text" className="form-input" value={cvData.phone} onChange={(e) => updateField('phone', e.target.value)} />
+              </div>
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+              <div>
+                <label className="form-label">Location (e.g. El Kef, Tunisia)</label>
+                <input type="text" className="form-input" value={cvData.location} onChange={(e) => updateField('location', e.target.value)} />
+              </div>
+              <div>
+                <label className="form-label">LinkedIn URL</label>
+                <input type="text" className="form-input" value={cvData.linkedin} onChange={(e) => updateField('linkedin', e.target.value)} />
+              </div>
             </div>
             <div>
-              <label className="form-label">Professional Role</label>
-              <input type="text" className="form-input" value={cvData.role} onChange={(e) => updateField('role', e.target.value)} />
+              <label className="form-label">Languages (e.g. English (C1) • French (B1))</label>
+              <input type="text" className="form-input" value={cvData.languages} onChange={(e) => updateField('languages', e.target.value)} />
+            </div>
+            <div>
+              <label className="form-label">Summary</label>
+              <textarea className="form-input" style={{ minHeight: '100px', resize: 'vertical' }} value={cvData.summary} onChange={(e) => updateField('summary', e.target.value)} />
             </div>
           </div>
         </div>
 
         {/* Skills */}
         <div className="glass-card" style={{ padding: '2rem' }}>
-          <h3 className="heading-sm" style={{ marginBottom: '1.5rem', color: '#00E5FF' }}>Skills</h3>
+          <h3 className="heading-sm" style={{ marginBottom: '1.5rem', color: '#00E5FF' }}>Technical Skills</h3>
+          <p style={{ color: 'var(--secondary)', fontSize: '0.9rem', marginBottom: '1rem' }}>Format for classic layout: "Category: Skill 1, Skill 2" (e.g., "Languages: Java, Python")</p>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '1rem' }}>
             {cvData.skills.map((skill, i) => (
               <div key={i} style={{ 
@@ -174,11 +207,42 @@ export default function Admin() {
           </div>
           <div style={{ display: 'flex', gap: '0.5rem' }}>
             <input 
-              type="text" className="form-input" placeholder="Add a skill..." 
+              type="text" className="form-input" placeholder="e.g. Languages: Java, Python..." 
               value={newSkill} onChange={(e) => setNewSkill(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && addSkill()}
             />
-            <button onClick={addSkill} className="btn-secondary">Add</button>
+            <button onClick={addSkill} className="btn-primary" style={{ padding: '0 1.5rem' }}>Add</button>
+          </div>
+        </div>
+
+        {/* Key Projects */}
+        <div className="glass-card" style={{ padding: '2rem' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+            <h3 className="heading-sm" style={{ color: '#00E5FF', margin: 0 }}>Key Projects</h3>
+            <button onClick={() => addArrayItem('keyProjects', { title: '', subtitle: '', location: '', date: '', points: [] })} className="btn-secondary" style={{ padding: '0.25rem 1rem', fontSize: '0.9rem' }}>+ Add Project</button>
+          </div>
+          <div style={{ display: 'grid', gap: '2rem' }}>
+            {cvData.keyProjects.map((proj, i) => (
+              <div key={i} style={{ padding: '1rem', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', position: 'relative' }}>
+                <button onClick={() => removeArrayItem('keyProjects', i)} style={{ position: 'absolute', top: '1rem', right: '1rem', background: 'none', border: 'none', color: '#FF006E', cursor: 'pointer' }}>Delete</button>
+                <div style={{ display: 'grid', gap: '1rem', paddingRight: '3rem' }}>
+                  <input type="text" className="form-input" placeholder="Project Title (e.g. PixelHR — Full HR Platform)" value={proj.title} onChange={(e) => updateArrayItem('keyProjects', i, 'title', e.target.value)} />
+                  <input type="text" className="form-input" placeholder="Subtitle (e.g. Final Year Project, ISI)" value={proj.subtitle} onChange={(e) => updateArrayItem('keyProjects', i, 'subtitle', e.target.value)} />
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                    <input type="text" className="form-input" placeholder="Location (e.g. Kef)" value={proj.location} onChange={(e) => updateArrayItem('keyProjects', i, 'location', e.target.value)} />
+                    <input type="text" className="form-input" placeholder="Dates (e.g. 2025 - 2026)" value={proj.date} onChange={(e) => updateArrayItem('keyProjects', i, 'date', e.target.value)} />
+                  </div>
+                  <textarea 
+                    className="form-input" 
+                    placeholder="Bullet points (put each point on a new line)" 
+                    value={(proj.points || []).join('\n')}
+                    onChange={(e) => updateArrayItem('keyProjects', i, 'points', e.target.value.split('\n').filter(p => p.trim() !== ''))}
+                    style={{ minHeight: '100px', resize: 'vertical' }}
+                  />
+                </div>
+              </div>
+            ))}
+            {cvData.keyProjects.length === 0 && <p style={{ color: 'var(--secondary)' }}>No key projects added yet.</p>}
           </div>
         </div>
 
@@ -186,21 +250,21 @@ export default function Admin() {
         <div className="glass-card" style={{ padding: '2rem' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
             <h3 className="heading-sm" style={{ color: '#00E5FF', margin: 0 }}>Experience</h3>
-            <button onClick={addExperience} className="btn-secondary" style={{ padding: '0.25rem 1rem', fontSize: '0.9rem' }}>+ Add Job</button>
+            <button onClick={() => addArrayItem('experience', { title: '', company: '', date: '', points: [] })} className="btn-secondary" style={{ padding: '0.25rem 1rem', fontSize: '0.9rem' }}>+ Add Job</button>
           </div>
           <div style={{ display: 'grid', gap: '2rem' }}>
             {cvData.experience.map((exp, i) => (
               <div key={i} style={{ padding: '1rem', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', position: 'relative' }}>
-                <button onClick={() => removeExperience(i)} style={{ position: 'absolute', top: '1rem', right: '1rem', background: 'none', border: 'none', color: '#FF006E', cursor: 'pointer' }}>Delete</button>
-                <div style={{ display: 'grid', gap: '1rem', marginBottom: '1rem', paddingRight: '3rem' }}>
-                  <input type="text" className="form-input" placeholder="Job Title (e.g. Frontend Engineer)" value={exp.title} onChange={(e) => updateExperience(i, 'title', e.target.value)} />
-                  <input type="text" className="form-input" placeholder="Company Name" value={exp.company} onChange={(e) => updateExperience(i, 'company', e.target.value)} />
-                  <input type="text" className="form-input" placeholder="Dates (e.g. Jan 2022 - Present)" value={exp.date} onChange={(e) => updateExperience(i, 'date', e.target.value)} />
+                <button onClick={() => removeArrayItem('experience', i)} style={{ position: 'absolute', top: '1rem', right: '1rem', background: 'none', border: 'none', color: '#FF006E', cursor: 'pointer' }}>Delete</button>
+                <div style={{ display: 'grid', gap: '1rem', paddingRight: '3rem' }}>
+                  <input type="text" className="form-input" placeholder="Job Title (e.g. Software Engineering Intern)" value={exp.title} onChange={(e) => updateArrayItem('experience', i, 'title', e.target.value)} />
+                  <input type="text" className="form-input" placeholder="Company Name" value={exp.company} onChange={(e) => updateArrayItem('experience', i, 'company', e.target.value)} />
+                  <input type="text" className="form-input" placeholder="Dates (e.g. 2026)" value={exp.date} onChange={(e) => updateArrayItem('experience', i, 'date', e.target.value)} />
                   <textarea 
                     className="form-input" 
                     placeholder="Bullet points (put each point on a new line)" 
                     value={(exp.points || []).join('\n')}
-                    onChange={(e) => updateExperience(i, 'points', e.target.value.split('\n').filter(p => p.trim() !== ''))}
+                    onChange={(e) => updateArrayItem('experience', i, 'points', e.target.value.split('\n').filter(p => p.trim() !== ''))}
                     style={{ minHeight: '100px', resize: 'vertical' }}
                   />
                 </div>
@@ -214,20 +278,49 @@ export default function Admin() {
         <div className="glass-card" style={{ padding: '2rem' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
             <h3 className="heading-sm" style={{ color: '#00E5FF', margin: 0 }}>Education</h3>
-            <button onClick={addEducation} className="btn-secondary" style={{ padding: '0.25rem 1rem', fontSize: '0.9rem' }}>+ Add School</button>
+            <button onClick={() => addArrayItem('education', { degree: '', school: '', date: '', subtitle: '' })} className="btn-secondary" style={{ padding: '0.25rem 1rem', fontSize: '0.9rem' }}>+ Add School</button>
           </div>
           <div style={{ display: 'grid', gap: '2rem' }}>
             {cvData.education.map((edu, i) => (
               <div key={i} style={{ padding: '1rem', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', position: 'relative' }}>
-                <button onClick={() => removeEducation(i)} style={{ position: 'absolute', top: '1rem', right: '1rem', background: 'none', border: 'none', color: '#FF006E', cursor: 'pointer' }}>Delete</button>
+                <button onClick={() => removeArrayItem('education', i)} style={{ position: 'absolute', top: '1rem', right: '1rem', background: 'none', border: 'none', color: '#FF006E', cursor: 'pointer' }}>Delete</button>
                 <div style={{ display: 'grid', gap: '1rem', paddingRight: '3rem' }}>
-                  <input type="text" className="form-input" placeholder="Degree (e.g. BS Computer Science)" value={edu.degree} onChange={(e) => updateEducation(i, 'degree', e.target.value)} />
-                  <input type="text" className="form-input" placeholder="School Name" value={edu.school} onChange={(e) => updateEducation(i, 'school', e.target.value)} />
-                  <input type="text" className="form-input" placeholder="Dates (e.g. 2018 - 2022)" value={edu.date} onChange={(e) => updateEducation(i, 'date', e.target.value)} />
+                  <input type="text" className="form-input" placeholder="Degree (e.g. Licence (BSc) in Software Engineering)" value={edu.degree} onChange={(e) => updateArrayItem('education', i, 'degree', e.target.value)} />
+                  <input type="text" className="form-input" placeholder="School (e.g. ISI Kef, El Kef, Tunisia)" value={edu.school} onChange={(e) => updateArrayItem('education', i, 'school', e.target.value)} />
+                  <input type="text" className="form-input" placeholder="Dates (e.g. Sep 2022 - Jun 2026)" value={edu.date} onChange={(e) => updateArrayItem('education', i, 'date', e.target.value)} />
+                  <input type="text" className="form-input" placeholder="Subtitle/Honours (e.g. Graduated with Honours)" value={edu.subtitle} onChange={(e) => updateArrayItem('education', i, 'subtitle', e.target.value)} />
                 </div>
               </div>
             ))}
             {cvData.education.length === 0 && <p style={{ color: 'var(--secondary)' }}>No education added yet.</p>}
+          </div>
+        </div>
+
+        {/* Certifications */}
+        <div className="glass-card" style={{ padding: '2rem' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+            <h3 className="heading-sm" style={{ color: '#00E5FF', margin: 0 }}>Certifications & Awards</h3>
+            <button onClick={() => addArrayItem('certifications', { title: '', issuer: '', date: '', points: [] })} className="btn-secondary" style={{ padding: '0.25rem 1rem', fontSize: '0.9rem' }}>+ Add Cert</button>
+          </div>
+          <div style={{ display: 'grid', gap: '2rem' }}>
+            {cvData.certifications.map((cert, i) => (
+              <div key={i} style={{ padding: '1rem', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', position: 'relative' }}>
+                <button onClick={() => removeArrayItem('certifications', i)} style={{ position: 'absolute', top: '1rem', right: '1rem', background: 'none', border: 'none', color: '#FF006E', cursor: 'pointer' }}>Delete</button>
+                <div style={{ display: 'grid', gap: '1rem', paddingRight: '3rem' }}>
+                  <input type="text" className="form-input" placeholder="Title (e.g. EF SET English Certificate)" value={cert.title} onChange={(e) => updateArrayItem('certifications', i, 'title', e.target.value)} />
+                  <input type="text" className="form-input" placeholder="Issuer (e.g. EF SET)" value={cert.issuer} onChange={(e) => updateArrayItem('certifications', i, 'issuer', e.target.value)} />
+                  <input type="text" className="form-input" placeholder="Date (e.g. July 2026)" value={cert.date} onChange={(e) => updateArrayItem('certifications', i, 'date', e.target.value)} />
+                  <textarea 
+                    className="form-input" 
+                    placeholder="Bullet points (put each point on a new line)" 
+                    value={(cert.points || []).join('\n')}
+                    onChange={(e) => updateArrayItem('certifications', i, 'points', e.target.value.split('\n').filter(p => p.trim() !== ''))}
+                    style={{ minHeight: '100px', resize: 'vertical' }}
+                  />
+                </div>
+              </div>
+            ))}
+            {cvData.certifications.length === 0 && <p style={{ color: 'var(--secondary)' }}>No certifications added yet.</p>}
           </div>
         </div>
 

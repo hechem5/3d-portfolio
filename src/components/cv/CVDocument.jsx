@@ -1,185 +1,300 @@
 import React from 'react';
 import { Document, Page, Text, View, StyleSheet, Font } from '@react-pdf/renderer';
 
-// Register standard premium fonts for rendering (Requires remote fetching in production, using standard Helvetica for robust fallback)
-// Font.register({ family: 'Open Sans', src: 'https://fonts.gstatic.com/s/opensans/v18/mem8YaGs126MiZpBA-UFVZ0e.ttf' });
+// Use standard Helvetica for this exact match, as it closely resembles the provided PDF's clean sans-serif.
+// A deep professional navy blue color from the screenshot
+const PRIMARY_BLUE = '#1A3A73'; 
 
 const styles = StyleSheet.create({
   page: {
-    flexDirection: 'row',
-    backgroundColor: '#FAFAFA',
+    padding: '30px 40px', // Standard resume padding
     fontFamily: 'Helvetica',
-  },
-  leftColumn: {
-    width: '35%',
-    backgroundColor: '#0F0920', // Dark premium background matching site
-    color: '#FFFFFF',
-    padding: 30,
-    display: 'flex',
-    flexDirection: 'column'
-  },
-  rightColumn: {
-    width: '65%',
-    padding: 40,
     backgroundColor: '#FFFFFF',
+    color: '#000000',
   },
-  name: {
-    fontSize: 28,
+  
+  // HEADER
+  headerName: {
+    fontSize: 22,
     fontWeight: 'bold',
-    color: '#FFFFFF',
-    marginBottom: 5,
+    color: PRIMARY_BLUE,
     textTransform: 'uppercase',
-    letterSpacing: 1
+    marginBottom: 4,
   },
-  role: {
-    fontSize: 14,
-    color: '#00E5FF', // Teal highlight
-    marginBottom: 30,
-    letterSpacing: 1,
-    textTransform: 'uppercase'
+  headerRole: {
+    fontSize: 12,
+    color: '#000000',
+    marginBottom: 4,
   },
-  sectionTitleLeft: {
-    fontSize: 14,
-    fontWeight: 'bold',
-    color: '#FFFFFF',
-    marginTop: 20,
-    marginBottom: 10,
-    textTransform: 'uppercase',
-    borderBottom: '1px solid #5227FF',
-    paddingBottom: 5,
-    letterSpacing: 1
+  headerContact: {
+    fontSize: 9,
+    color: '#333333',
+    marginBottom: 2,
   },
-  sectionTitleRight: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#0F0920',
-    marginBottom: 15,
-    textTransform: 'uppercase',
-    borderBottom: '2px solid #5227FF',
-    paddingBottom: 5,
-    letterSpacing: 1
-  },
-  skillPill: {
-    backgroundColor: 'rgba(0, 229, 255, 0.1)',
-    border: '1px solid #00E5FF',
-    borderRadius: 4,
-    padding: '4px 8px',
+  headerLanguages: {
+    fontSize: 9,
+    color: '#333333',
     marginBottom: 8,
-    marginRight: 8,
-    fontSize: 10,
-    color: '#00E5FF'
   },
-  skillsContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    marginTop: 5
+  headerLine: {
+    borderBottomWidth: 1.5,
+    borderBottomColor: PRIMARY_BLUE,
+    marginBottom: 10,
   },
-  itemBlock: {
-    marginBottom: 15
+
+  // SECTION TITLES
+  sectionTitleContainer: {
+    borderBottomWidth: 1,
+    borderBottomColor: PRIMARY_BLUE,
+    marginBottom: 8,
+    marginTop: 12,
+    paddingBottom: 2,
   },
-  itemTitle: {
-    fontSize: 14,
+  sectionTitle: {
+    fontSize: 11,
     fontWeight: 'bold',
-    color: '#0F0920'
+    color: PRIMARY_BLUE,
+    textTransform: 'uppercase',
   },
-  itemSubtitleContainer: {
-    display: 'flex',
+
+  // SUMMARY
+  summaryText: {
+    fontSize: 9.5,
+    lineHeight: 1.4,
+    color: '#000000',
+    textAlign: 'justify'
+  },
+
+  // SKILLS
+  skillRow: {
+    flexDirection: 'row',
+    marginBottom: 3,
+  },
+  skillCategory: {
+    fontSize: 9.5,
+    fontWeight: 'bold',
+    color: '#000000',
+  },
+  skillList: {
+    fontSize: 9.5,
+    color: '#000000',
+  },
+
+  // ITEMS (Projects, Experience, Education)
+  itemBlock: {
+    marginBottom: 8,
+  },
+  itemHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 5,
-    marginTop: 2
+    alignItems: 'flex-start',
+    marginBottom: 2,
   },
-  itemCompany: {
-    fontSize: 11,
-    color: '#5227FF',
-    fontWeight: 'bold'
-  },
-  itemDate: {
+  itemTitleLeft: {
     fontSize: 10,
-    color: '#888888',
-    fontStyle: 'italic'
+    fontWeight: 'bold',
+    color: '#000000',
+    flex: 1, // take remaining space
   },
-  itemText: {
-    fontSize: 10,
-    color: '#444444',
-    lineHeight: 1.5,
-    marginBottom: 3
+  itemTitleRight: {
+    fontSize: 9.5,
+    color: '#000000',
+    textAlign: 'right',
   },
-  contactText: {
-    fontSize: 10,
-    color: '#CCCCCC',
-    marginBottom: 5
+  itemSubtitleContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    marginBottom: 4,
+  },
+  itemSubtitleLeft: {
+    fontSize: 9.5,
+    fontStyle: 'italic',
+    color: '#333333',
+  },
+  itemSubtitleRight: {
+    fontSize: 9.5,
+    color: '#000000',
+    textAlign: 'right',
+  },
+  
+  // BULLET POINTS
+  bulletRow: {
+    flexDirection: 'row',
+    marginBottom: 3,
+    paddingLeft: 4,
+  },
+  bulletPoint: {
+    width: 10,
+    fontSize: 9.5,
+    color: '#000000',
+  },
+  bulletText: {
+    flex: 1,
+    fontSize: 9.5,
+    lineHeight: 1.3,
+    color: '#000000',
   }
 });
 
 export const CVDocument = ({ data }) => {
-  const safeData = data || { name: '', role: '', skills: [], experience: [], education: [] };
+  const d = data || {};
+
+  // Helper to format contact string
+  const contactParts = [];
+  if (d.location) contactParts.push(d.location);
+  if (d.phone) contactParts.push(d.phone);
+  if (d.email) contactParts.push(d.email);
+  if (d.linkedin) contactParts.push(d.linkedin.replace(/^https?:\/\//, ''));
+  const contactString = contactParts.join(' | ');
 
   return (
     <Document>
       <Page size="A4" style={styles.page}>
         
-        {/* LEFT COLUMN - DARK */}
-        <View style={styles.leftColumn}>
-          <Text style={styles.name}>{safeData.name || 'Hechem Klai'}</Text>
-          <Text style={styles.role}>{safeData.role || 'Full Stack Developer'}</Text>
+        {/* HEADER */}
+        <View>
+          <Text style={styles.headerName}>{d.name || 'HECHEM KLAI'}</Text>
+          <Text style={styles.headerRole}>{d.role || 'Full Stack Developer'}</Text>
+          {contactString && <Text style={styles.headerContact}>{contactString}</Text>}
+          {d.languages && <Text style={styles.headerLanguages}>{d.languages}</Text>}
+          <View style={styles.headerLine} />
+        </View>
 
-          <Text style={styles.sectionTitleLeft}>Contact</Text>
-          <Text style={styles.contactText}>{safeData.email || 'hechem.klai@gmail.com'}</Text>
-          <Text style={styles.contactText}>Tunisia</Text>
+        {/* SUMMARY */}
+        {d.summary && (
+          <View>
+            <View style={styles.sectionTitleContainer}>
+              <Text style={styles.sectionTitle}>SUMMARY</Text>
+            </View>
+            <Text style={styles.summaryText}>{d.summary}</Text>
+          </View>
+        )}
 
-          {safeData.skills && safeData.skills.length > 0 && (
-            <View>
-              <Text style={styles.sectionTitleLeft}>Skills</Text>
-              <View style={styles.skillsContainer}>
-                {safeData.skills.map((skill, i) => (
-                  <Text key={i} style={styles.skillPill}>{skill}</Text>
+        {/* TECHNICAL SKILLS */}
+        {d.skills && d.skills.length > 0 && (
+          <View>
+            <View style={styles.sectionTitleContainer}>
+              <Text style={styles.sectionTitle}>TECHNICAL SKILLS</Text>
+            </View>
+            {d.skills.map((skillString, i) => {
+              // Assumes format "Category: Skill 1, Skill 2"
+              const parts = skillString.split(':');
+              if (parts.length > 1) {
+                return (
+                  <View key={i} style={styles.skillRow}>
+                    <Text style={styles.skillCategory}>{parts[0]}:</Text>
+                    <Text style={styles.skillList}> {parts.slice(1).join(':').trim()}</Text>
+                  </View>
+                );
+              }
+              // Fallback if no colon
+              return (
+                <View key={i} style={styles.skillRow}>
+                  <Text style={styles.skillList}>• {skillString}</Text>
+                </View>
+              );
+            })}
+          </View>
+        )}
+
+        {/* KEY PROJECT */}
+        {d.keyProjects && d.keyProjects.length > 0 && (
+          <View>
+            <View style={styles.sectionTitleContainer}>
+              <Text style={styles.sectionTitle}>KEY PROJECT</Text>
+            </View>
+            {d.keyProjects.map((proj, i) => (
+              <View key={i} style={styles.itemBlock}>
+                <View style={styles.itemHeader}>
+                  <Text style={styles.itemTitleLeft}>{proj.title}</Text>
+                  <Text style={styles.itemTitleRight}>{proj.subtitle}</Text>
+                </View>
+                {(proj.location || proj.date) && (
+                  <View style={styles.itemSubtitleContainer}>
+                    <Text style={styles.itemSubtitleLeft}></Text>
+                    <Text style={styles.itemTitleRight}>{proj.location ? proj.location + '  ' : ''}{proj.date}</Text>
+                  </View>
+                )}
+                {proj.points && proj.points.map((pt, j) => (
+                  <View key={j} style={styles.bulletRow}>
+                    <Text style={styles.bulletPoint}>•</Text>
+                    <Text style={styles.bulletText}>{pt}</Text>
+                  </View>
                 ))}
               </View>
-            </View>
-          )}
-        </View>
+            ))}
+          </View>
+        )}
 
-        {/* RIGHT COLUMN - LIGHT */}
-        <View style={styles.rightColumn}>
-          
-          {/* EXPERIENCE */}
-          {safeData.experience && safeData.experience.length > 0 && (
-            <View style={{ marginBottom: 20 }}>
-              <Text style={styles.sectionTitleRight}>Professional Experience</Text>
-              {safeData.experience.map((exp, i) => (
-                <View key={i} style={styles.itemBlock}>
-                  <Text style={styles.itemTitle}>{exp.title}</Text>
-                  <View style={styles.itemSubtitleContainer}>
-                    <Text style={styles.itemCompany}>{exp.company}</Text>
-                    <Text style={styles.itemDate}>{exp.date}</Text>
-                  </View>
-                  {exp.points && exp.points.map((pt, j) => (
-                    <Text key={j} style={styles.itemText}>• {pt}</Text>
-                  ))}
-                </View>
-              ))}
+        {/* EXPERIENCE */}
+        {d.experience && d.experience.length > 0 && (
+          <View>
+            <View style={styles.sectionTitleContainer}>
+              <Text style={styles.sectionTitle}>EXPERIENCE</Text>
             </View>
-          )}
+            {d.experience.map((exp, i) => (
+              <View key={i} style={styles.itemBlock}>
+                <View style={styles.itemHeader}>
+                  <Text style={styles.itemTitleLeft}>{exp.title} {exp.company ? `| ${exp.company}` : ''}</Text>
+                  <Text style={styles.itemTitleRight}>{exp.date}</Text>
+                </View>
+                {exp.points && exp.points.map((pt, j) => (
+                  <View key={j} style={styles.bulletRow}>
+                    <Text style={styles.bulletPoint}>•</Text>
+                    <Text style={styles.bulletText}>{pt}</Text>
+                  </View>
+                ))}
+              </View>
+            ))}
+          </View>
+        )}
 
-          {/* EDUCATION */}
-          {safeData.education && safeData.education.length > 0 && (
-            <View>
-              <Text style={styles.sectionTitleRight}>Education</Text>
-              {safeData.education.map((edu, i) => (
-                <View key={i} style={styles.itemBlock}>
-                  <Text style={styles.itemTitle}>{edu.degree}</Text>
-                  <View style={styles.itemSubtitleContainer}>
-                    <Text style={styles.itemCompany}>{edu.school}</Text>
-                    <Text style={styles.itemDate}>{edu.date}</Text>
-                  </View>
-                </View>
-              ))}
+        {/* EDUCATION */}
+        {d.education && d.education.length > 0 && (
+          <View>
+            <View style={styles.sectionTitleContainer}>
+              <Text style={styles.sectionTitle}>EDUCATION</Text>
             </View>
-          )}
-          
-        </View>
+            {d.education.map((edu, i) => (
+              <View key={i} style={styles.itemBlock}>
+                <View style={styles.itemHeader}>
+                  <Text style={styles.itemTitleLeft}>{edu.degree} {edu.school ? `| ${edu.school}` : ''}</Text>
+                  <Text style={styles.itemTitleRight}>{edu.date}</Text>
+                </View>
+                {edu.subtitle && (
+                  <Text style={styles.itemSubtitleLeft}>{edu.subtitle}</Text>
+                )}
+              </View>
+            ))}
+          </View>
+        )}
+
+        {/* CERTIFICATIONS & AWARDS */}
+        {d.certifications && d.certifications.length > 0 && (
+          <View>
+            <View style={styles.sectionTitleContainer}>
+              <Text style={styles.sectionTitle}>CERTIFICATIONS & AWARDS</Text>
+            </View>
+            {d.certifications.map((cert, i) => (
+              <View key={i} style={styles.itemBlock}>
+                <View style={styles.itemHeader}>
+                  <Text style={styles.itemTitleLeft}>{cert.title}</Text>
+                  <Text style={styles.itemTitleRight}>{cert.date}</Text>
+                </View>
+                {cert.issuer && (
+                  <Text style={styles.itemSubtitleLeft}>{cert.issuer}</Text>
+                )}
+                {cert.points && cert.points.map((pt, j) => (
+                  <View key={j} style={styles.bulletRow}>
+                    <Text style={styles.bulletPoint}>•</Text>
+                    <Text style={styles.bulletText}>{pt}</Text>
+                  </View>
+                ))}
+              </View>
+            ))}
+          </View>
+        )}
 
       </Page>
     </Document>
