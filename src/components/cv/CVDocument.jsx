@@ -1,114 +1,185 @@
 import React from 'react';
 import { Document, Page, Text, View, StyleSheet, Font } from '@react-pdf/renderer';
 
-// We can define custom fonts if needed, but for simplicity we'll use standard fonts first
+// Register standard premium fonts for rendering (Requires remote fetching in production, using standard Helvetica for robust fallback)
+// Font.register({ family: 'Open Sans', src: 'https://fonts.gstatic.com/s/opensans/v18/mem8YaGs126MiZpBA-UFVZ0e.ttf' });
+
 const styles = StyleSheet.create({
   page: {
-    flexDirection: 'column',
-    backgroundColor: '#FFFFFF',
-    padding: 30,
-    fontFamily: 'Helvetica'
+    flexDirection: 'row',
+    backgroundColor: '#FAFAFA',
+    fontFamily: 'Helvetica',
   },
-  header: {
-    marginBottom: 20,
-    borderBottom: '2px solid #5227FF',
-    paddingBottom: 10
+  leftColumn: {
+    width: '35%',
+    backgroundColor: '#0F0920', // Dark premium background matching site
+    color: '#FFFFFF',
+    padding: 30,
+    display: 'flex',
+    flexDirection: 'column'
+  },
+  rightColumn: {
+    width: '65%',
+    padding: 40,
+    backgroundColor: '#FFFFFF',
   },
   name: {
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: 'bold',
-    color: '#000000',
-    marginBottom: 5
+    color: '#FFFFFF',
+    marginBottom: 5,
+    textTransform: 'uppercase',
+    letterSpacing: 1
   },
   role: {
     fontSize: 14,
-    color: '#5227FF',
-  },
-  sectionTitle: {
-    fontSize: 14,
-    fontWeight: 'bold',
-    color: '#5227FF',
-    marginTop: 15,
-    marginBottom: 8,
+    color: '#00E5FF', // Teal highlight
+    marginBottom: 30,
+    letterSpacing: 1,
     textTransform: 'uppercase'
   },
+  sectionTitleLeft: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: '#FFFFFF',
+    marginTop: 20,
+    marginBottom: 10,
+    textTransform: 'uppercase',
+    borderBottom: '1px solid #5227FF',
+    paddingBottom: 5,
+    letterSpacing: 1
+  },
+  sectionTitleRight: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#0F0920',
+    marginBottom: 15,
+    textTransform: 'uppercase',
+    borderBottom: '2px solid #5227FF',
+    paddingBottom: 5,
+    letterSpacing: 1
+  },
+  skillPill: {
+    backgroundColor: 'rgba(0, 229, 255, 0.1)',
+    border: '1px solid #00E5FF',
+    borderRadius: 4,
+    padding: '4px 8px',
+    marginBottom: 8,
+    marginRight: 8,
+    fontSize: 10,
+    color: '#00E5FF'
+  },
+  skillsContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginTop: 5
+  },
   itemBlock: {
-    marginBottom: 10
+    marginBottom: 15
   },
   itemTitle: {
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: 'bold',
-    color: '#000000'
+    color: '#0F0920'
   },
-  itemSubtitle: {
+  itemSubtitleContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 5,
+    marginTop: 2
+  },
+  itemCompany: {
+    fontSize: 11,
+    color: '#5227FF',
+    fontWeight: 'bold'
+  },
+  itemDate: {
     fontSize: 10,
-    color: '#666666',
-    marginBottom: 4
+    color: '#888888',
+    fontStyle: 'italic'
   },
   itemText: {
     fontSize: 10,
-    color: '#333333',
-    lineHeight: 1.4
+    color: '#444444',
+    lineHeight: 1.5,
+    marginBottom: 3
   },
-  skillsList: {
+  contactText: {
     fontSize: 10,
-    color: '#333333',
-    lineHeight: 1.5
+    color: '#CCCCCC',
+    marginBottom: 5
   }
 });
 
 export const CVDocument = ({ data }) => {
-  // Defensive checks in case data isn't perfectly structured yet
-  const safeData = data || { name: 'Hechem Klai', role: 'Full Stack Developer', skills: [], experience: [], education: [] };
+  const safeData = data || { name: '', role: '', skills: [], experience: [], education: [] };
 
   return (
     <Document>
       <Page size="A4" style={styles.page}>
         
-        {/* HEADER */}
-        <View style={styles.header}>
+        {/* LEFT COLUMN - DARK */}
+        <View style={styles.leftColumn}>
           <Text style={styles.name}>{safeData.name || 'Hechem Klai'}</Text>
           <Text style={styles.role}>{safeData.role || 'Full Stack Developer'}</Text>
-        </View>
 
-        {/* EXPERIENCE */}
-        {safeData.experience && safeData.experience.length > 0 && (
-          <View>
-            <Text style={styles.sectionTitle}>Experience</Text>
-            {safeData.experience.map((exp, i) => (
-              <View key={i} style={styles.itemBlock}>
-                <Text style={styles.itemTitle}>{exp.title}</Text>
-                <Text style={styles.itemSubtitle}>{exp.company} | {exp.date}</Text>
-                {exp.points && exp.points.map((pt, j) => (
-                  <Text key={j} style={styles.itemText}>• {pt}</Text>
+          <Text style={styles.sectionTitleLeft}>Contact</Text>
+          <Text style={styles.contactText}>{safeData.email || 'hechem.klai@gmail.com'}</Text>
+          <Text style={styles.contactText}>Tunisia</Text>
+
+          {safeData.skills && safeData.skills.length > 0 && (
+            <View>
+              <Text style={styles.sectionTitleLeft}>Skills</Text>
+              <View style={styles.skillsContainer}>
+                {safeData.skills.map((skill, i) => (
+                  <Text key={i} style={styles.skillPill}>{skill}</Text>
                 ))}
               </View>
-            ))}
-          </View>
-        )}
+            </View>
+          )}
+        </View>
 
-        {/* EDUCATION */}
-        {safeData.education && safeData.education.length > 0 && (
-          <View>
-            <Text style={styles.sectionTitle}>Education</Text>
-            {safeData.education.map((edu, i) => (
-              <View key={i} style={styles.itemBlock}>
-                <Text style={styles.itemTitle}>{edu.degree}</Text>
-                <Text style={styles.itemSubtitle}>{edu.school} | {edu.date}</Text>
-              </View>
-            ))}
-          </View>
-        )}
+        {/* RIGHT COLUMN - LIGHT */}
+        <View style={styles.rightColumn}>
+          
+          {/* EXPERIENCE */}
+          {safeData.experience && safeData.experience.length > 0 && (
+            <View style={{ marginBottom: 20 }}>
+              <Text style={styles.sectionTitleRight}>Professional Experience</Text>
+              {safeData.experience.map((exp, i) => (
+                <View key={i} style={styles.itemBlock}>
+                  <Text style={styles.itemTitle}>{exp.title}</Text>
+                  <View style={styles.itemSubtitleContainer}>
+                    <Text style={styles.itemCompany}>{exp.company}</Text>
+                    <Text style={styles.itemDate}>{exp.date}</Text>
+                  </View>
+                  {exp.points && exp.points.map((pt, j) => (
+                    <Text key={j} style={styles.itemText}>• {pt}</Text>
+                  ))}
+                </View>
+              ))}
+            </View>
+          )}
 
-        {/* SKILLS */}
-        {safeData.skills && safeData.skills.length > 0 && (
-          <View>
-            <Text style={styles.sectionTitle}>Skills</Text>
-            <Text style={styles.skillsList}>
-              {safeData.skills.join(' • ')}
-            </Text>
-          </View>
-        )}
+          {/* EDUCATION */}
+          {safeData.education && safeData.education.length > 0 && (
+            <View>
+              <Text style={styles.sectionTitleRight}>Education</Text>
+              {safeData.education.map((edu, i) => (
+                <View key={i} style={styles.itemBlock}>
+                  <Text style={styles.itemTitle}>{edu.degree}</Text>
+                  <View style={styles.itemSubtitleContainer}>
+                    <Text style={styles.itemCompany}>{edu.school}</Text>
+                    <Text style={styles.itemDate}>{edu.date}</Text>
+                  </View>
+                </View>
+              ))}
+            </View>
+          )}
+          
+        </View>
 
       </Page>
     </Document>
