@@ -24,7 +24,8 @@ export default function Admin() {
     keyProjects: [],
     experience: [],
     education: [],
-    certifications: []
+    certifications: [],
+    designTheme: 'classic'
   });
   const [saving, setSaving] = useState(false);
   const [newSkill, setNewSkill] = useState('');
@@ -67,7 +68,8 @@ export default function Admin() {
         keyProjects: data.content.keyProjects || [],
         experience: data.content.experience || [],
         education: data.content.education || [],
-        certifications: data.content.certifications || []
+        certifications: data.content.certifications || [],
+        designTheme: data.content.designTheme || 'classic'
       });
     } else {
       console.error(error);
@@ -158,7 +160,8 @@ export default function Admin() {
         keyProjects: parsed.keyProjects || [],
         experience: parsed.experience || [],
         education: parsed.education || [],
-        certifications: parsed.certifications || []
+        certifications: parsed.certifications || [],
+        designTheme: parsed.designTheme || 'classic'
       });
       
       setJsonError('');
@@ -220,6 +223,24 @@ export default function Admin() {
         
         {/* LEFT COLUMN: FORM */}
         <div style={{ display: 'grid', gap: '2rem' }}>
+
+        {/* Theme Selector */}
+        <div className="glass-card" style={{ padding: '2rem', borderLeft: '4px solid #00E5FF' }}>
+          <h3 className="heading-sm" style={{ marginBottom: '1rem', color: '#00E5FF' }}>Design Theme</h3>
+          <p style={{ color: 'var(--secondary)', fontSize: '0.9rem', marginBottom: '1rem' }}>
+            Choose the visual layout for your generated PDF.
+          </p>
+          <select 
+            className="form-input" 
+            value={cvData.designTheme || 'classic'}
+            onChange={(e) => updateField('designTheme', e.target.value)}
+            style={{ width: '100%', padding: '0.75rem', backgroundColor: 'rgba(255, 255, 255, 0.05)', color: '#fff', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '8px' }}
+          >
+            <option value="classic" style={{ color: '#000' }}>Classic (Professional, Single Column)</option>
+            <option value="modern" style={{ color: '#000' }}>Modern (Dual-Column with Dark Sidebar)</option>
+            <option value="minimalist" style={{ color: '#000' }}>Minimalist (Clean, Spacious, Monochromatic)</option>
+          </select>
+        </div>
         
         {/* JSON Import Tool */}
         <div className="glass-card" style={{ padding: '2rem', borderLeft: '4px solid #915EFF' }}>
