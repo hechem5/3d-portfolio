@@ -232,7 +232,7 @@ export default function Admin() {
         <div className="glass-card" style={{ padding: '2rem' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
             <h3 className="heading-sm" style={{ color: '#00E5FF', margin: 0 }}>Key Projects</h3>
-            <button onClick={() => addArrayItem('keyProjects', { title: '', subtitle: '', location: '', date: '', points: [] })} className="btn-secondary" style={{ padding: '0.25rem 1rem', fontSize: '0.9rem' }}>+ Add Project</button>
+            <button onClick={() => addArrayItem('keyProjects', { title: '', subtitle: '', location: '', date: '', points: [] })} className="btn-primary" style={{ padding: '0.25rem 1.5rem', fontSize: '0.9rem' }}>+ Add Project</button>
           </div>
           <div style={{ display: 'grid', gap: '2rem' }}>
             {cvData.keyProjects.map((proj, i) => (
@@ -263,7 +263,7 @@ export default function Admin() {
         <div className="glass-card" style={{ padding: '2rem' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
             <h3 className="heading-sm" style={{ color: '#00E5FF', margin: 0 }}>Experience</h3>
-            <button onClick={() => addArrayItem('experience', { title: '', company: '', date: '', points: [] })} className="btn-secondary" style={{ padding: '0.25rem 1rem', fontSize: '0.9rem' }}>+ Add Job</button>
+            <button onClick={() => addArrayItem('experience', { title: '', company: '', date: '', points: [] })} className="btn-primary" style={{ padding: '0.25rem 1.5rem', fontSize: '0.9rem' }}>+ Add Job</button>
           </div>
           <div style={{ display: 'grid', gap: '2rem' }}>
             {cvData.experience.map((exp, i) => (
@@ -291,7 +291,7 @@ export default function Admin() {
         <div className="glass-card" style={{ padding: '2rem' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
             <h3 className="heading-sm" style={{ color: '#00E5FF', margin: 0 }}>Education</h3>
-            <button onClick={() => addArrayItem('education', { degree: '', school: '', date: '', subtitle: '' })} className="btn-secondary" style={{ padding: '0.25rem 1rem', fontSize: '0.9rem' }}>+ Add School</button>
+            <button onClick={() => addArrayItem('education', { degree: '', school: '', date: '', subtitle: '' })} className="btn-primary" style={{ padding: '0.25rem 1.5rem', fontSize: '0.9rem' }}>+ Add School</button>
           </div>
           <div style={{ display: 'grid', gap: '2rem' }}>
             {cvData.education.map((edu, i) => (
@@ -313,7 +313,7 @@ export default function Admin() {
         <div className="glass-card" style={{ padding: '2rem' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
             <h3 className="heading-sm" style={{ color: '#00E5FF', margin: 0 }}>Certifications & Awards</h3>
-            <button onClick={() => addArrayItem('certifications', { title: '', issuer: '', date: '', points: [] })} className="btn-secondary" style={{ padding: '0.25rem 1rem', fontSize: '0.9rem' }}>+ Add Cert</button>
+            <button onClick={() => addArrayItem('certifications', { title: '', issuer: '', date: '', points: [] })} className="btn-primary" style={{ padding: '0.25rem 1.5rem', fontSize: '0.9rem' }}>+ Add Cert</button>
           </div>
           <div style={{ display: 'grid', gap: '2rem' }}>
             {cvData.certifications.map((cert, i) => (
