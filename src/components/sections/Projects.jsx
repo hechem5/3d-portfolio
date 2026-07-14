@@ -73,24 +73,21 @@ export default function Projects() {
                 borderRadius={24}
               >
                 <div className="project-card-inner">
-                  <div className="project-image-container">
-                    <a 
-                      href={project.live_link !== "#" ? project.live_link : undefined}
-                      target={project.live_link !== "#" ? "_blank" : undefined}
-                      rel="noopener noreferrer"
-                      className="project-image-placeholder"
-                      style={{ cursor: project.live_link !== "#" ? "pointer" : "default" }}
-                    >
-                      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke={project.live_link !== "#" ? "rgba(82, 39, 255, 0.8)" : "rgba(82, 39, 255, 0.3)"} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                        <line x1="7" y1="17" x2="17" y2="7" />
-                        <polyline points="7 7 17 7 17 17" />
-                      </svg>
-                    </a>
-                    <div className="project-image-overlay" />
-
-                  </div>
                   <div className="project-body">
-                    <h3 className="project-name">{project.name}</h3>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <h3 className="project-name">{project.name}</h3>
+                      <a 
+                        href={project.live_link !== "#" ? project.live_link : undefined}
+                        target={project.live_link !== "#" ? "_blank" : undefined}
+                        rel="noopener noreferrer"
+                        style={{ cursor: project.live_link !== "#" ? "pointer" : "default", display: 'block', position: 'relative', zIndex: 20, padding: '4px' }}
+                      >
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={project.live_link !== "#" ? "rgba(82, 39, 255, 0.8)" : "rgba(82, 39, 255, 0.3)"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <line x1="7" y1="17" x2="17" y2="7" />
+                          <polyline points="7 7 17 7 17 17" />
+                        </svg>
+                      </a>
+                    </div>
                     <p className="project-desc">{project.description}</p>
                     <div className="project-tags">
                       {project.tags.map((tag) => (
