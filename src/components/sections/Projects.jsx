@@ -72,34 +72,37 @@ export default function Projects() {
                 chaos={0.1}
                 borderRadius={24}
               >
-                <div className="project-card-inner">
+                <a 
+                  className="project-card-inner"
+                  href={project.live_link !== "#" ? project.live_link : undefined}
+                  target={project.live_link !== "#" ? "_blank" : undefined}
+                  rel="noopener noreferrer"
+                  style={{ 
+                    textDecoration: 'none', 
+                    color: 'inherit', 
+                    display: 'block', 
+                    cursor: project.live_link !== "#" ? "pointer" : "default",
+                    position: 'relative',
+                    zIndex: 20
+                  }}
+                >
                   <div className="project-body">
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                       <h3 className="project-name">{project.name}</h3>
-                      <a 
-                        href={project.live_link !== "#" ? project.live_link : undefined}
-                        target={project.live_link !== "#" ? "_blank" : undefined}
-                        rel="noopener noreferrer"
-                        onClick={(e) => {
-                          if (project.live_link !== "#") {
-                            e.stopPropagation();
-                          }
-                        }}
+                      <div 
                         style={{ 
-                          cursor: project.live_link !== "#" ? "pointer" : "default", 
                           display: 'flex', 
                           position: 'relative', 
                           zIndex: 50, 
                           padding: '8px', 
-                          margin: '-8px',
-                          pointerEvents: 'auto'
+                          margin: '-8px'
                         }}
                       >
-                        <svg style={{ pointerEvents: 'none' }} width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={project.live_link !== "#" ? "rgba(82, 39, 255, 0.8)" : "rgba(82, 39, 255, 0.3)"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={project.live_link !== "#" ? "rgba(82, 39, 255, 0.8)" : "rgba(82, 39, 255, 0.3)"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                           <line x1="7" y1="17" x2="17" y2="7" />
                           <polyline points="7 7 17 7 17 17" />
                         </svg>
-                      </a>
+                      </div>
                     </div>
                     <p className="project-desc">{project.description}</p>
                     <div className="project-tags">
@@ -118,7 +121,7 @@ export default function Projects() {
                       ))}
                     </div>
                   </div>
-                </div>
+                </a>
               </ElectricBorder>
             </motion.div>
           ))}
