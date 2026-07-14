@@ -124,6 +124,17 @@ export const certificates = [
 
 export const experiences = [
   {
+    title: "Self Employed",
+    company: "Independent Developer",
+    date: "2026 — Present",
+    points: [
+      "Built 'DreamScape', an immersive Next.js web application utilizing Three.js and GSAP for 3D experiences.",
+      "Developed 'Recall', a comprehensive full-stack platform featuring a web app, backend, and browser extension.",
+      "Engineered robust architectures using modern JavaScript ecosystem technologies.",
+    ],
+    color: "#38bdf8",
+  },
+  {
     title: "Internship Trainee",
     company: "Pixel pulsar",
     date: "Feb 2026 — May 2026",
@@ -162,6 +173,32 @@ export const experiences = [
 ];
 
 export const projects = [
+  {
+    name: "DreamScape",
+    description:
+      "A modern web application leveraging Next.js, Three.js, and GSAP for immersive 3D experiences, backed by Prisma and a robust API.",
+    tags: [
+      { name: "Next.js", color: "#ffffff" },
+      { name: "Three.js", color: "#00E5FF" },
+      { name: "GSAP", color: "#88CE02" },
+      { name: "Prisma", color: "#5a67d8" },
+    ],
+    source_code_link: "https://github.com/hechem5/dreamscape",
+    live_link: "#",
+  },
+  {
+    name: "Recall",
+    description:
+      "A comprehensive full-stack solution featuring a dedicated backend API, a modern frontend web application, and a browser extension.",
+    tags: [
+      { name: "React", color: "#61DAFB" },
+      { name: "Node.js", color: "#339933" },
+      { name: "Web Extension", color: "#f89820" },
+      { name: "Full Stack", color: "#915EFF" },
+    ],
+    source_code_link: "https://github.com/hechem5/Recall",
+    live_link: "#",
+  },
   {
     name: "PixelHR",
     description:
