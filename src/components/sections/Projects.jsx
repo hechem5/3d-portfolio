@@ -74,9 +74,18 @@ export default function Projects() {
               >
                 <div className="project-card-inner">
                   <div className="project-image-container">
-                    <div className="project-image-placeholder">
-                      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="rgba(82, 39, 255, 0.3)" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-                    </div>
+                    <a 
+                      href={project.live_link !== "#" ? project.live_link : undefined}
+                      target={project.live_link !== "#" ? "_blank" : undefined}
+                      rel="noopener noreferrer"
+                      className="project-image-placeholder"
+                      style={{ cursor: project.live_link !== "#" ? "pointer" : "default" }}
+                    >
+                      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke={project.live_link !== "#" ? "rgba(82, 39, 255, 0.8)" : "rgba(82, 39, 255, 0.3)"} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                        <line x1="7" y1="17" x2="17" y2="7" />
+                        <polyline points="7 7 17 7 17 17" />
+                      </svg>
+                    </a>
                     <div className="project-image-overlay" />
 
                   </div>
