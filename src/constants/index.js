@@ -124,27 +124,16 @@ export const certificates = [
 
 export const experiences = [
   {
-    title: "Self Employed",
-    company: "Independent Developer",
-    date: "2026 — Present",
+    title: "Bachelor's Degree in Software Engineering",
+    company: "Université de Jendouba",
+    date: "Sep 2023 — Jul 2026",
     points: [
-      "Built 'DreamScape', an immersive Next.js web application utilizing Three.js and GSAP for 3D experiences.",
-      "Developed 'Recall', a comprehensive full-stack platform featuring a web app, backend, and browser extension.",
-      "Engineered robust architectures using modern JavaScript ecosystem technologies.",
+      "Graduated with honors, completing a rigorous 3-year program.",
+      "Focused on software engineering, algorithmic problem solving, and modern application architecture.",
+      "Developed expertise in Artificial Intelligence (AI), Machine Learning, and Cloud Computing.",
+      "Mastered a wide array of languages including Java, Python, HTML5, CSS, PHP, and JavaScript.",
     ],
-    color: "#38bdf8",
-  },
-  {
-    title: "Internship Trainee",
-    company: "Pixel pulsar",
-    date: "Feb 2026 — May 2026",
-    points: [
-      "Worked in a remote environment utilizing React.js, Tailwind CSS, and Java.",
-      "Developed secure and scalable web applications leveraging JSON Web Token (JWT).",
-      "Built and maintained REST APIs and modern Microservices architectures.",
-      "Gained hands-on experience applying Python and other web technologies.",
-    ],
-    color: "#915EFF",
+    color: "#ff006e",
   },
   {
     title: "Internship Trainee",
@@ -159,33 +148,31 @@ export const experiences = [
     color: "#00d4ff",
   },
   {
-    title: "Bachelor's Degree in Software Engineering",
-    company: "Université de Jendouba",
-    date: "Sep 2023 — Jul 2026",
+    title: "Internship Trainee",
+    company: "Pixel pulsar",
+    date: "Feb 2026 — May 2026",
     points: [
-      "Graduated with honors, completing a rigorous 3-year program.",
-      "Focused on software engineering, algorithmic problem solving, and modern application architecture.",
-      "Developed expertise in Artificial Intelligence (AI), Machine Learning, and Cloud Computing.",
-      "Mastered a wide array of languages including Java, Python, HTML5, CSS, PHP, and JavaScript.",
+      "Worked in a remote environment utilizing React.js, Tailwind CSS, and Java.",
+      "Developed secure and scalable web applications leveraging JSON Web Token (JWT).",
+      "Built and maintained REST APIs and modern Microservices architectures.",
+      "Gained hands-on experience applying Python and other web technologies.",
     ],
-    color: "#ff006e",
+    color: "#915EFF",
+  },
+  {
+    title: "Self Employed",
+    company: "Independent Developer",
+    date: "2026 — Present",
+    points: [
+      "Built 'DreamScape', an immersive Next.js web application utilizing Three.js and GSAP for 3D experiences.",
+      "Developed 'Recall', a comprehensive full-stack platform featuring a web app, backend, and browser extension.",
+      "Engineered robust architectures using modern JavaScript ecosystem technologies.",
+    ],
+    color: "#38bdf8",
   },
 ];
 
 export const projects = [
-  {
-    name: "DreamScape",
-    description:
-      "A modern web application leveraging Next.js, Three.js, and GSAP for immersive 3D experiences, backed by Prisma and a robust API.",
-    tags: [
-      { name: "Next.js", color: "#ffffff" },
-      { name: "Three.js", color: "#00E5FF" },
-      { name: "GSAP", color: "#88CE02" },
-      { name: "Prisma", color: "#5a67d8" },
-    ],
-    source_code_link: "https://github.com/hechem5/dreamscape",
-    live_link: "#",
-  },
   {
     name: "Recall",
     description:
@@ -197,6 +184,19 @@ export const projects = [
       { name: "Full Stack", color: "#915EFF" },
     ],
     source_code_link: "https://github.com/hechem5/Recall",
+    live_link: "#",
+  },
+  {
+    name: "DreamScape",
+    description:
+      "A modern web application leveraging Next.js, Three.js, and GSAP for immersive 3D experiences, backed by Prisma and a robust API.",
+    tags: [
+      { name: "Next.js", color: "#ffffff" },
+      { name: "Three.js", color: "#00E5FF" },
+      { name: "GSAP", color: "#88CE02" },
+      { name: "Prisma", color: "#5a67d8" },
+    ],
+    source_code_link: "https://github.com/hechem5/dreamscape",
     live_link: "#",
   },
   {
