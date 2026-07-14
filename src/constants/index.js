@@ -176,7 +176,7 @@ export const projects = [
   {
     name: "Recall",
     description:
-      "A comprehensive full-stack solution featuring a dedicated backend API, a modern frontend web application, and a browser extension.",
+      "An intelligent personal memory system that uses semantic search and vector embeddings to ingest and recall information. Includes an AI-generated weekly digest and a browser extension for quick saving.",
     tags: [
       { name: "React", color: "#61DAFB" },
       { name: "Node.js", color: "#339933" },
@@ -189,7 +189,7 @@ export const projects = [
   {
     name: "DreamScape",
     description:
-      "A modern web application leveraging Next.js, Three.js, and GSAP for immersive 3D experiences, backed by Prisma and a robust API.",
+      "An AI-powered subconscious exploration platform. Features a comprehensive dream journal, personal analytics dashboard, and AI-driven intelligence for extracting insights, themes, and emotional trends from your dreams.",
     tags: [
       { name: "Next.js", color: "#ffffff" },
       { name: "Three.js", color: "#00E5FF" },
