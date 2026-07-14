@@ -80,9 +80,22 @@ export default function Projects() {
                         href={project.live_link !== "#" ? project.live_link : undefined}
                         target={project.live_link !== "#" ? "_blank" : undefined}
                         rel="noopener noreferrer"
-                        style={{ cursor: project.live_link !== "#" ? "pointer" : "default", display: 'block', position: 'relative', zIndex: 20, padding: '4px' }}
+                        onClick={(e) => {
+                          if (project.live_link !== "#") {
+                            e.stopPropagation();
+                          }
+                        }}
+                        style={{ 
+                          cursor: project.live_link !== "#" ? "pointer" : "default", 
+                          display: 'flex', 
+                          position: 'relative', 
+                          zIndex: 50, 
+                          padding: '8px', 
+                          margin: '-8px',
+                          pointerEvents: 'auto'
+                        }}
                       >
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={project.live_link !== "#" ? "rgba(82, 39, 255, 0.8)" : "rgba(82, 39, 255, 0.3)"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <svg style={{ pointerEvents: 'none' }} width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={project.live_link !== "#" ? "rgba(82, 39, 255, 0.8)" : "rgba(82, 39, 255, 0.3)"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                           <line x1="7" y1="17" x2="17" y2="7" />
                           <polyline points="7 7 17 7 17 17" />
                         </svg>
